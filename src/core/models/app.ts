@@ -6,6 +6,7 @@ export type AppState = {
   showLayout: boolean
   showCode: boolean
   focusInputText: boolean
+  useComponentFocused: boolean
   overlay: undefined | Overlay
 }
 
@@ -23,6 +24,7 @@ const app = createModel({
     showLayout: true,
     showCode: false,
     focusInputText: false,
+    useComponentFocused: false,
     overlay: undefined,
   } as AppState,
   reducers: {
@@ -42,6 +44,12 @@ const app = createModel({
       return {
         ...state,
         focusInputText: !state.focusInputText,
+      }
+    },
+    toggleComponentFocused(state: AppState): AppState {
+      return {
+        ...state,
+        useComponentFocused: !state.useComponentFocused,
       }
     },
 
