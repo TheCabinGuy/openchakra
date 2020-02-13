@@ -1,6 +1,5 @@
 import { createModel } from '@rematch/core'
 import { DEFAULT_PROPS } from '../../utils/defaultProps'
-import omit from 'lodash/omit'
 import templates, { TemplateType } from '../../templates'
 import { generateId } from '../../utils/generateId'
 import { duplicateComponent, deleteComponent } from '../../utils/recursive'
@@ -8,6 +7,7 @@ import { duplicateComponent, deleteComponent } from '../../utils/recursive'
 export type ComponentsState = {
   components: IComponents
   selectedId: IComponent['id']
+  hoveredId?: IComponent['id']
 }
 export type ComponentsStateWithUndo = {
   past: ComponentsState[]
@@ -269,6 +269,21 @@ const components = createModel({
         }
       }
       return state
+    },
+    hover(
+      state: ComponentsState,
+      componentId: IComponent['id'],
+    ): ComponentsState {
+      return {
+        ...state,
+        hoveredId: componentId,
+      }
+    },
+    unhover(state: ComponentsState): ComponentsState {
+      return {
+        ...state,
+        hoveredId: undefined,
+      }
     },
   },
 })
