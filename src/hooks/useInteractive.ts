@@ -4,6 +4,7 @@ import useDispatch from './useDispatch'
 import { useDrag } from 'react-dnd'
 import { getSelectedComponentId } from '../core/selectors/components'
 import { getShowLayout } from '../core/selectors/app'
+import { getShowInputText } from '../core/selectors/app'
 
 export const useInteractive = (
   component: IComponent,
@@ -13,6 +14,7 @@ export const useInteractive = (
   const [hover, setHover] = useState(false)
   const showLayout = useSelector(getShowLayout)
   const selectedId = useSelector(getSelectedComponentId)
+  const focusInput = useSelector(getShowInputText)
   const [, drag] = useDrag({
     item: { id: component.id, type: component.type, isMoved: true },
   })
@@ -31,11 +33,16 @@ export const useInteractive = (
       event.preventDefault()
       event.stopPropagation()
       dispatch.components.select(component.id)
+      if (focusInput === true) {
+        dispatch.app.toggleInputText()
+      }
     },
     onDoubleClick: (event: MouseEvent) => {
       event.preventDefault()
       event.stopPropagation()
-      dispatch.app.toggleInputText()
+      if (focusInput === false) {
+        dispatch.app.toggleInputText()
+      }
     },
   }
 
